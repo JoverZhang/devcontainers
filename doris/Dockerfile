@@ -50,10 +50,22 @@ RUN wget "https://doris-community-bj-1308700295.cos.ap-beijing.myqcloud.com/tool
     && cp _build/ccache /var/local/ldb-toolchain/bin/
 RUN rm -f /etc/profile.d/ccache.*
 
+# clone latest source code, download and build third party
+RUN git clone --depth=1 https://github.com/apache/doris.git ${DEFAULT_DIR}/doris \
+    && cd ${DEFAULT_DIR}/doris \
+    && /bin/bash thirdparty/build-thirdparty.sh \
+    && rm -rf ${DEFAULT_DIR}/doris/thirdparty/src \
+    && rm -rf ${DEFAULT_DIR}/doris-thirdparty.tar.gz \
+    && rm -rf ${DEFAULT_DIR}/doris-thirdparty \
+    && mkdir -p ${DEFAULT_DIR}/thirdparty \
+    && mv ${DEFAULT_DIR}/doris/thirdparty/installed ${DEFAULT_DIR}/thirdparty/ \
+    && rm -rf ${DEFAULT_DIR}/doris
+
 ENV JAVA_HOME="/usr/lib/jvm/jdk-17.0.2" \
     MAVEN_HOME="/usr/share/maven" \
     REPOSITORY_URL="https://doris-thirdparty-repo.bj.bcebos.com/thirdparty" \
-    DEFAULT_DIR="/var/local"
+    DEFAULT_DIR="/var/local" \
+    DORIS_THIRDPARTY="/var/local/thirdparty"
 ENV PATH="/var/local/ldb-toolchain/bin/:/var/local/thirdparty/installed/bin/:$JAVA_HOME/bin/:$PATH"
 
 USER 1000
