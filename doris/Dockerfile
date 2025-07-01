@@ -31,7 +31,7 @@ RUN wget https://doris-thirdparty-1308700295.cos.ap-beijing.myqcloud.com/tools/o
 # 0.17
 RUN wget https://doris-community-bj-1308700295.cos.ap-beijing.myqcloud.com/tools/ldb_toolchain_gen.sh \
     -q -O /tmp/ldb_toolchain_gen.sh \
-    && sh /tmp/ldb_toolchain_gen.sh /var/local/ldb-toolchain/ \
+    && bash /tmp/ldb_toolchain_gen.sh /var/local/ldb-toolchain/ \
     && rm /tmp/ldb_toolchain_gen.sh
 
 # there is a repo which is included all of thirdparty
